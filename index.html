@@ -343,10 +343,12 @@ document.getElementById('languageModal').classList.add('active');
     }
 
     function setLanguage(lang) {
-      localStorage.setItem('mlvoyagerLang', lang);
-      applyLanguage(lang);
-     
 document.getElementById('languageModal').classList.remove('active');
+  localStorage.setItem('mlvoyagerLang', lang);
+  applyLanguage(lang);
+  document.getElementById('languageModal').classList.remove('active');
+  // Zamknij menu hamburgera po wyborze języka
+  document.getElementById('menu').classList.remove('active');
     }
 
     function applyLanguage(lang) {
