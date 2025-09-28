@@ -182,6 +182,51 @@ rel="stylesheet" />
       font-size: 1em;
       text-shadow: 0 0 5px rgba(0,0,0,0.6);
     }
+    .media-grid {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+    .media-btn {
+      display: inline-block;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .media-btn.youtube {
+      background: #ff0000;
+    }
+    .media-btn.tiktok {
+      background: #000000;
+    }
+    .media-btn.instagram {
+      background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    }
+    .media-btn:hover {
+      transform: scale(1.07);
+      filter: brightness(1.1);
+    }
+    .close-btn {
+      margin-top: 10px;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #eee;
+      color: #333;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .close-btn:hover {
+      background: #ddd;
+    }
   </style>
 </head>
 <body>
@@ -195,13 +240,11 @@ onclick="toggleMenu()">
   </div>
 
   <div class="menu" id="menu">
-    <a href="#" id="menu-guide">Kup
 przewodnik</a>
-    <a href="#"
-id="menu-contact">Kontakt</a>
-    <a href="#" id="menu-media">Media</a>
-    <a href="#" onclick="openLanguageModal()"
-id="menu-language">Zmiana języka</a>
+  <a href="#" id="menu-guide">Kup przewodnik</a>
+  <a href="#" id="menu-contact">Kontakt</a>
+  <a href="#" id="menu-media" onclick="openMediaModal()">Media</a>
+  <a href="#" onclick="openLanguageModal()" id="menu-language">Zmiana języka</a>
   </div>
 
   <div class="modal" id="languageModal">
@@ -223,6 +266,17 @@ style="background-image: url('https://flagcdn.com/w320/de.png');">
         <span>Deutsch</span>
       </div>
     </div>
+  </div>
+
+  <!-- Modal Media -->
+  <div class="modal" id="mediaModal">
+    <h2>Media</h2>
+    <div class="media-grid">
+      <a href="https://www.youtube.com/" target="_blank" class="media-btn youtube">YouTube</a>
+      <a href="https://www.tiktok.com/" target="_blank" class="media-btn tiktok">TikTok</a>
+      <a href="https://www.instagram.com/" target="_blank" class="media-btn instagram">Instagram</a>
+    </div>
+    <button onclick="closeMediaModal()" class="close-btn">Zamknij</button>
   </div>
 
   <div class="grid">
@@ -289,7 +343,20 @@ kopiować</footer>
         title: "ML Voyager",
         chooseLanguage: "Wybierz język",
         menu: ["Kup przewodnik", "Kontakt",
-"Media", "Zmiana języka"],
+
+    function openLanguageModal() {
+
+      document.getElementById('title').textContent = t.title;
+  
+    applyLanguage(savedLang);
+  </script>
+</body>
+  <script>
+    const translations = {
+      pl: {
+        title: "ML Voyager",
+        chooseLanguage: "Wybierz język",
+        menu: ["Kup przewodnik", "Kontakt", "Media", "Zmiana języka"],
         footer: "© 2025 jedryka-studio — Nie kopiować",
         dubrownik: "Dubrownik, Chorwacja",
         madera: "Madera, Portugalia",
@@ -303,8 +370,7 @@ kopiować</footer>
       en: {
         title: "ML Voyager",
         chooseLanguage: "Choose language",
-        menu: ["Buy guide", "Contact",
-"Media", "Change language"],
+        menu: ["Buy guide", "Contact", "Media", "Change language"],
         footer: "© 2025 jedryka-studio — Do not copy",
         dubrownik: "Dubrovnik, Croatia",
         madera: "Madeira, Portugal",
@@ -318,8 +384,7 @@ kopiować</footer>
       de: {
         title: "ML Voyager",
         chooseLanguage: "Sprache wählen",
-        menu: ["Reiseführer kaufen", "Kontakt",
-"Medien", "Sprache ändern"],
+        menu: ["Reiseführer kaufen", "Kontakt", "Medien", "Sprache ändern"],
         footer: "© 2025 jedryka-studio — Nicht kopieren",
         dubrownik: "Dubrovnik, Kroatien",
         madera: "Madeira, Portugal",
@@ -333,29 +398,34 @@ kopiować</footer>
     };
 
     function toggleMenu() {
-     
-document.getElementById('menu').classList.toggle('active');
+      document.getElementById('menu').classList.toggle('active');
+    }
+
+    function openMediaModal() {
+      document.getElementById('mediaModal').classList.add('active');
+      document.getElementById('menu').classList.remove('active');
+    }
+
+    function closeMediaModal() {
+      document.getElementById('mediaModal').classList.remove('active');
     }
 
     function openLanguageModal() {
-     
-document.getElementById('languageModal').classList.add('active');
+      document.getElementById('languageModal').classList.add('active');
     }
 
     function setLanguage(lang) {
-document.getElementById('languageModal').classList.remove('active');
-  localStorage.setItem('mlvoyagerLang', lang);
-  applyLanguage(lang);
-  document.getElementById('languageModal').classList.remove('active');
-  // Zamknij menu hamburgera po wyborze języka
-  document.getElementById('menu').classList.remove('active');
+      document.getElementById('languageModal').classList.remove('active');
+      localStorage.setItem('mlvoyagerLang', lang);
+      applyLanguage(lang);
+      // Zamknij menu hamburgera po wyborze języka
+      document.getElementById('menu').classList.remove('active');
     }
 
     function applyLanguage(lang) {
       const t = translations[lang] || translations['pl'];
       document.getElementById('title').textContent = t.title;
-      document.getElementById('chooseLanguage').textContent =
-t.chooseLanguage;
+      document.getElementById('chooseLanguage').textContent = t.chooseLanguage;
       document.getElementById('footer').textContent = t.footer;
 
       const menuItems = document.querySelectorAll('.menu a');
@@ -370,8 +440,7 @@ t.chooseLanguage;
       });
     }
 
-    const savedLang = localStorage.getItem('mlvoyagerLang') ||
-'pl';
+    const savedLang = localStorage.getItem('mlvoyagerLang') || 'pl';
     applyLanguage(savedLang);
   </script>
 </body>
